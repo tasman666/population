@@ -26,6 +26,9 @@ class PopulationServiceSpec extends Specification {
                  new Population(2012, 45000)]           | []
 
                 [new Population(2010, 35000),
+                 new Population(2011, 35000)]           | []
+
+                [new Population(2010, 35000),
                  new Population(2011, 25000),
                  new Population(2012, 15000),
                  new Population(2013, 15000)]           | []
@@ -48,11 +51,65 @@ class PopulationServiceSpec extends Specification {
     }
 
     @Unroll
-    def "should throw exception when top number = #topNumber"() {
+    def "should throw exception on find top population growths when top number = #topNumber"() {
         given:
             populationRepository.findPopulationsSortedByYear() >> []
         when:
             populationService.findTopPopulationGrowths(topNumber)
+        then:
+            thrown IllegalArgumentException
+        where:
+            topNumber << [-2, -1, 0]
+    }
+
+    @Unroll
+    def "should find top 2 population declines when populations #populations"() {
+        given:
+            populationRepository.findPopulationsSortedByYear() >> populations
+        when:
+            List<PopulationDifference> populationDeclines = populationService.findTopPopulationDeclines(2)
+        then:
+            populationDeclines == expectedPopulationDeclines
+        where:
+            populations                                 | expectedPopulationDeclines
+                []                                      | []
+
+                [new Population(2010, 35000)]           | []
+
+                [new Population(2010, 35000),
+                 new Population(2012, 25000)]           | []
+
+                [new Population(2010, 35000),
+                 new Population(2011, 45000),
+                 new Population(2012, 55000),
+                 new Population(2013, 65000)]           | []
+
+                [new Population(2010, 35000),
+                 new Population(2011, 35000)]           | []
+
+                [new Population(2010, 95000),
+                 new Population(2011, 90000),
+                 new Population(2012, 80000),
+                 new Population(2013, 77000)]           | [new PopulationDifference(2012, -10000), new PopulationDifference(2011, -5000)]
+
+                [new Population(2010, 55000),
+                 new Population(2011, 45000),
+                 new Population(2012, 35000),
+                 new Population(2013, 25000)]           | [new PopulationDifference(2011, -10000), new PopulationDifference(2012, -10000)]
+
+                [new Population(2010, 35000),
+                 new Population(2011, 25000),
+                 new Population(2012, 55000)]           | [new PopulationDifference(2011, -10000)]
+
+
+    }
+
+    @Unroll
+    def "should throw exception on find top population declines when top number = #topNumber"() {
+        given:
+            populationRepository.findPopulationsSortedByYear() >> []
+        when:
+            populationService.findTopPopulationDeclines(topNumber)
         then:
             thrown IllegalArgumentException
         where:

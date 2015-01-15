@@ -1,5 +1,6 @@
 package com.adthena.population.domain;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -15,6 +16,20 @@ public class PopulationService {
     }
 
     public List<PopulationDifference> findTopPopulationGrowths(int topNumber) {
+        return findTopPopulationDifferences(topNumber,
+                                            populationDifference -> populationDifference.isPopulationGrowth(),
+                                            comparing(PopulationDifference::getValue).reversed());
+    }
+
+    public List<PopulationDifference> findTopPopulationDeclines(int topNumber) {
+        return findTopPopulationDifferences(topNumber,
+                                            populationDifference -> populationDifference.isPopulationDecline(),
+                                            comparing(PopulationDifference::getValue));
+    }
+
+    private List<PopulationDifference> findTopPopulationDifferences(int topNumber,
+                                                                    Predicate<PopulationDifference> populationDifferencePredicate,
+                                                                    Comparator<PopulationDifference> populationDifferenceComparator) {
         if (topNumber < 1) {
             throw new IllegalArgumentException("Top number below 1");
         }
@@ -25,9 +40,9 @@ public class PopulationService {
                                 .stream()
                                 .filter(previousYearPopulationFor(population))
                                 .map(previousPopulation -> createPopulationDifference(population, previousPopulation))
-                                .filter(populationDifference -> populationDifference.isPopulationGrowth())
+                                .filter(populationDifferencePredicate)
                 )
-                .sorted(comparing(PopulationDifference::getValue).reversed())
+                .sorted(populationDifferenceComparator)
                 .limit(topNumber)
                 .collect(Collectors.toList());
     }
