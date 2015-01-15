@@ -4,12 +4,16 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.Objects;
+
 public class PopulationDifference {
 
     private final Integer year;
     private final Long value;
 
     public PopulationDifference(Integer year, Long value) {
+        Objects.requireNonNull(year);
+        Objects.requireNonNull(value);
         this.year = year;
         this.value = value;
     }
@@ -31,5 +35,9 @@ public class PopulationDifference {
 
     public Long getValue() {
         return value;
+    }
+
+    public boolean isPopulationGrowth() {
+        return value > 0;
     }
 }

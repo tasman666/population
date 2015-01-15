@@ -1,8 +1,10 @@
 package com.adthena.population.domain;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
+import static java.util.Comparator.comparing;
 
 public class PopulationService {
 
@@ -16,21 +18,25 @@ public class PopulationService {
         if (topNumber < 1) {
             throw new IllegalArgumentException("Top number below 1");
         }
-        List<PopulationDifference> populationDifferences = new ArrayList<>();
-        Population previousPopulation = null;
-        for (Population population : populationRepository.findPopulationsSortedByYear()) {
-            if (previousPopulation != null && previousPopulation.getYear() == population.getYear() - 1) {
-                long difference = population.getNumber() - previousPopulation.getNumber();
-                if (difference > 0) {
-                    populationDifferences.add(new PopulationDifference(population.getYear(), difference));
-                }
-            }
-            previousPopulation = population;
-        }
-        return populationDifferences
+        List<Population> populations = populationRepository.findPopulationsSortedByYear();
+        return populations
                 .stream()
-                .sorted((pd1, pd2) -> pd2.getValue().compareTo(pd1.getValue()))
+                .flatMap(population -> populations
+                                .stream()
+                                .filter(previousYearPopulationFor(population))
+                                .map(previousPopulation -> createPopulationDifference(population, previousPopulation))
+                                .filter(populationDifference -> populationDifference.isPopulationGrowth())
+                )
+                .sorted(comparing(PopulationDifference::getValue).reversed())
                 .limit(topNumber)
                 .collect(Collectors.toList());
+    }
+
+    private Predicate<Population> previousYearPopulationFor(Population population) {
+        return p -> p.getYear() == population.getYear() - 1;
+    }
+
+    private PopulationDifference createPopulationDifference(Population population, Population previousPopulation) {
+        return new PopulationDifference(population.getYear(), population.getNumber() - previousPopulation.getNumber());
     }
 }
