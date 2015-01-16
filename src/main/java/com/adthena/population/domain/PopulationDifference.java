@@ -9,9 +9,9 @@ import java.util.Objects;
 public class PopulationDifference {
 
     private final Integer year;
-    private final Long value;
+    private final Integer value;
 
-    public PopulationDifference(Integer year, Long value) {
+    public PopulationDifference(Integer year, Integer value) {
         Objects.requireNonNull(year);
         Objects.requireNonNull(value);
         this.year = year;
@@ -33,7 +33,7 @@ public class PopulationDifference {
         return ToStringBuilder.reflectionToString(this);
     }
 
-    public Long getValue() {
+    public Integer getValue() {
         return value;
     }
 
@@ -43,5 +43,9 @@ public class PopulationDifference {
 
     public boolean isPopulationDecline() {
         return value < 0;
+    }
+
+    public Integer getYear() {
+        return year;
     }
 }

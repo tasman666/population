@@ -10,20 +10,20 @@ import java.util.Objects;
 public class Population {
 
     private final Integer year;
-    private final Long number;
+    private final Integer number;
 
-    public Population(Integer year, Long number) {
+    public Population(Integer year, Integer number) {
         Objects.requireNonNull(year);
         Objects.requireNonNull(number);
         this.year = year;
         this.number = number;
     }
 
-    public int getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    public long getNumber() {
+    public Integer getNumber() {
         return number;
     }
 
