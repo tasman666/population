@@ -116,4 +116,45 @@ class PopulationServiceSpec extends Specification {
             topNumber << [-2, -1, 0]
     }
 
+    @Unroll
+    def "should find the largest deviation from the average growth difference when populations #populations"() {
+        given:
+            populationRepository.findPopulations() >> populations
+        when:
+            Optional<Double> largestDeviation = populationService.findLargestDeviationFromAverageGrowthDifference()
+        then:
+            largestDeviation == expectedLargestDeviation
+        where:
+            populations                             | expectedLargestDeviation
+            []                                      | Optional.empty()
+
+            [new Population(2010, 35000)]           | Optional.empty()
+
+            [new Population(2010, 35000),
+             new Population(2012, 45000)]           | Optional.empty()
+
+            [new Population(2010, 35000),
+             new Population(2011, 35000)]           | Optional.empty()
+
+            [new Population(2010, 35000),
+             new Population(2011, 25000),
+             new Population(2012, 15000),
+             new Population(2013, 11000)]           | Optional.of(4000.0.toDouble())
+
+            [new Population(2010, 35000),
+             new Population(2011, 45000),
+             new Population(2012, 75000),
+             new Population(2013, 80000)]           | Optional.of(15000.0.toDouble())
+
+            [new Population(2010, 35000),
+             new Population(2011, 45000),
+             new Population(2012, 55000),
+             new Population(2013, 65000)]           | Optional.of(0.0.toDouble())
+
+            [new Population(2010, 35000),
+             new Population(2011, 25000),
+             new Population(2012, 55000)]           | Optional.of(20000.0.toDouble())
+    }
+
+
 }

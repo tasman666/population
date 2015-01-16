@@ -12,6 +12,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 public class PopulationApplication {
@@ -27,6 +28,7 @@ public class PopulationApplication {
         System.out.println("--- Results ---");
         calculateTop2PopulationGrowthYears(populationService);
         calculateTop2PopulationDeclines(populationService);
+        calculateLargestDeviationFromAverageGrowthDifference(populationService);
     }
 
     private static DB recreatePopulationDatabase() throws UnknownHostException {
@@ -65,4 +67,9 @@ public class PopulationApplication {
         System.out.println();
     }
 
+    private static void calculateLargestDeviationFromAverageGrowthDifference(PopulationService populationService) {
+        System.out.print("The largest deviation from the average growth difference: ");
+        Optional<Double> largestDeviationFromAverageGrowthDifference = populationService.findLargestDeviationFromAverageGrowthDifference();
+        System.out.println(largestDeviationFromAverageGrowthDifference.orElse(null));
+    }
 }
