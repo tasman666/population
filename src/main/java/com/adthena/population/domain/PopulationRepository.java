@@ -3,5 +3,5 @@ package com.adthena.population.domain;
 import java.util.List;
 
 public interface PopulationRepository {
-    List<Population> findPopulationsSortedByYear();
+    List<Population> findPopulations();
 }

@@ -33,7 +33,7 @@ public class PopulationService {
         if (topNumber < 1) {
             throw new IllegalArgumentException("Top number below 1");
         }
-        List<Population> populations = populationRepository.findPopulationsSortedByYear();
+        List<Population> populations = populationRepository.findPopulations();
         return populations
                 .stream()
                 .flatMap(population -> populations

@@ -18,7 +18,7 @@ public class PopulationMongoDBRepository implements PopulationRepository {
     }
 
     @Override
-    public List<Population> findPopulationsSortedByYear() {
+    public List<Population> findPopulations() {
         List<Population> populations = new ArrayList<>();
         AggregationOutput output = populationsCollection.aggregate(
                 new BasicDBObject("$group",

@@ -11,7 +11,7 @@ class PopulationServiceSpec extends Specification {
     @Unroll
     def "should find top 2 population growths when populations #populations"() {
         given:
-            populationRepository.findPopulationsSortedByYear() >> populations
+            populationRepository.findPopulations() >> populations
         when:
             List<PopulationDifference> populationGrowths = populationService.findTopPopulationGrowths(2)
         then:
@@ -53,7 +53,7 @@ class PopulationServiceSpec extends Specification {
     @Unroll
     def "should throw exception on find top population growths when top number = #topNumber"() {
         given:
-            populationRepository.findPopulationsSortedByYear() >> []
+            populationRepository.findPopulations() >> []
         when:
             populationService.findTopPopulationGrowths(topNumber)
         then:
@@ -65,7 +65,7 @@ class PopulationServiceSpec extends Specification {
     @Unroll
     def "should find top 2 population declines when populations #populations"() {
         given:
-            populationRepository.findPopulationsSortedByYear() >> populations
+            populationRepository.findPopulations() >> populations
         when:
             List<PopulationDifference> populationDeclines = populationService.findTopPopulationDeclines(2)
         then:
@@ -107,7 +107,7 @@ class PopulationServiceSpec extends Specification {
     @Unroll
     def "should throw exception on find top population declines when top number = #topNumber"() {
         given:
-            populationRepository.findPopulationsSortedByYear() >> []
+            populationRepository.findPopulations() >> []
         when:
             populationService.findTopPopulationDeclines(topNumber)
         then:
