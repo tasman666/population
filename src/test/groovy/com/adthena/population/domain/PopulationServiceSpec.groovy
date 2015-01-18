@@ -26,12 +26,12 @@ class PopulationServiceSpec extends Specification {
                  new Population(2012, 45000)]           | []
 
                 [new Population(2010, 35000),
-                 new Population(2011, 35000)]           | []
-
-                [new Population(2010, 35000),
                  new Population(2011, 25000),
                  new Population(2012, 15000),
-                 new Population(2013, 15000)]           | []
+                 new Population(2013, 10000)]           | []
+
+                [new Population(2010, 35000),
+                 new Population(2011, 35000)]           | [new PopulationDifference(2011, 0)]  // Special case - we assuming that zero is population growth
 
                 [new Population(2010, 35000),
                  new Population(2011, 45000),
@@ -134,7 +134,7 @@ class PopulationServiceSpec extends Specification {
              new Population(2012, 45000)]           | Optional.empty()
 
             [new Population(2010, 35000),
-             new Population(2011, 35000)]           | Optional.empty()
+             new Population(2011, 35000)]           | Optional.of(0.0.toDouble())
 
             [new Population(2010, 35000),
              new Population(2011, 25000),

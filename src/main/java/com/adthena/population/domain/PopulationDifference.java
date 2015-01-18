@@ -38,7 +38,7 @@ public class PopulationDifference {
     }
 
     public boolean isPopulationGrowth() {
-        return value > 0;
+        return value >= 0;
     }
 
     public boolean isPopulationDecline() {
