@@ -18,7 +18,7 @@ import java.util.stream.Stream;
 public class PopulationApplication {
 
     public static final String MONGO_DB_NAME = "population";
-    public static final String POPULATION_FILE_PATH = "C:/Users/tasman/Documents/workspace-sts-2.6.1.RELEASE/adthena-population/src/main/resources/populations.json";
+    public static final String POPULATION_FILE_PATH = "populations.json";
 
     public static void main(String[] args) throws IOException {
         DB populationDatabase = recreatePopulationDatabase();
