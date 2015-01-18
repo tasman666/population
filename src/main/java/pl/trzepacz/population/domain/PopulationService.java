@@ -31,36 +31,6 @@ public class PopulationService {
                                             comparing(PopulationDifference::getValue));
     }
 
-    public Optional<Double> findLargestDeviationFromAverageGrowthDifference() {
-        List<Population> populations = populationRepository.findPopulations();
-        Predicate<PopulationDifference> allPopulationDifferences = populationDifference ->
-                populationDifference.isPopulationDecline() || populationDifference.isPopulationGrowth();
-        OptionalDouble averageGrowthDifference = calculateAverageGrowthDifference(populations, allPopulationDifferences);
-        return createPopulationDifferencesStream(populations, allPopulationDifferences)
-                .map(pd -> Math.abs(pd.getValue() - averageGrowthDifference.getAsDouble()))
-                .sorted(reverseOrder())
-                .findFirst();
-    }
-
-    private OptionalDouble calculateAverageGrowthDifference(List<Population> populations, Predicate<PopulationDifference> allPopulationDifferences) {
-        return createPopulationDifferencesStream(populations, allPopulationDifferences)
-                .mapToDouble(PopulationDifference::getValue)
-                .average();
-    }
-
-    private List<PopulationDifference> findTopPopulationDifferences(int topNumber,
-                                                                    Predicate<PopulationDifference> populationDifferencePredicate,
-                                                                    Comparator<PopulationDifference> populationDifferenceComparator) {
-        if (topNumber < 1) {
-            throw new IllegalArgumentException("Top number below 1");
-        }
-        List<Population> populations = populationRepository.findPopulations();
-        return createPopulationDifferencesStream(populations, populationDifferencePredicate)
-                .sorted(populationDifferenceComparator)
-                .limit(topNumber)
-                .collect(Collectors.toList());
-    }
-
     private Stream<PopulationDifference> createPopulationDifferencesStream(List<Population> populations,
                                                                            Predicate<PopulationDifference> populationDifferencePredicate) {
         return populations
@@ -79,6 +49,36 @@ public class PopulationService {
 
     private PopulationDifference createPopulationDifference(Population population, Population previousPopulation) {
         return new PopulationDifference(population.getYear(), population.getNumber() - previousPopulation.getNumber());
+    }
+
+    private List<PopulationDifference> findTopPopulationDifferences(int topNumber,
+                                                                    Predicate<PopulationDifference> populationDifferencePredicate,
+                                                                    Comparator<PopulationDifference> populationDifferenceComparator) {
+        if (topNumber < 1) {
+            throw new IllegalArgumentException("Top number below 1");
+        }
+        List<Population> populations = populationRepository.findPopulations();
+        return createPopulationDifferencesStream(populations, populationDifferencePredicate)
+                .sorted(populationDifferenceComparator)
+                .limit(topNumber)
+                .collect(Collectors.toList());
+    }
+
+    public Optional<Double> findLargestDeviationFromAverageGrowthDifference() {
+        List<Population> populations = populationRepository.findPopulations();
+        Predicate<PopulationDifference> allPopulationDifferences = populationDifference ->
+                populationDifference.isPopulationDecline() || populationDifference.isPopulationGrowth();
+        OptionalDouble averageGrowthDifference = calculateAverageGrowthDifference(populations, allPopulationDifferences);
+        return createPopulationDifferencesStream(populations, allPopulationDifferences)
+                .map(pd -> Math.abs(pd.getValue() - averageGrowthDifference.getAsDouble()))
+                .sorted(reverseOrder())
+                .findFirst();
+    }
+
+    private OptionalDouble calculateAverageGrowthDifference(List<Population> populations, Predicate<PopulationDifference> allPopulationDifferences) {
+        return createPopulationDifferencesStream(populations, allPopulationDifferences)
+                .mapToDouble(PopulationDifference::getValue)
+                .average();
     }
 
 }
