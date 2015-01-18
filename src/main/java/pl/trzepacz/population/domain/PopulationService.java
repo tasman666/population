@@ -1,4 +1,4 @@
-package com.adthena.population.domain;
+package pl.trzepacz.population.domain;
 
 import java.util.Comparator;
 import java.util.List;

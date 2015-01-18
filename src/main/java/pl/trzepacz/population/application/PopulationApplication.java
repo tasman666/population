@@ -1,8 +1,8 @@
-package com.adthena.population.application;
+package pl.trzepacz.population.application;
 
-import com.adthena.population.domain.PopulationDifference;
-import com.adthena.population.domain.PopulationService;
-import com.adthena.population.infrastructure.PopulationMongoDBRepository;
+import pl.trzepacz.population.domain.PopulationDifference;
+import pl.trzepacz.population.domain.PopulationService;
+import pl.trzepacz.population.infrastructure.PopulationMongoDBRepository;
 import com.mongodb.*;
 import com.mongodb.util.JSON;
 

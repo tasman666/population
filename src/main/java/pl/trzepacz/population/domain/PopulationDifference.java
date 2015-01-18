@@ -1,30 +1,21 @@
-package com.adthena.population.domain;
+package pl.trzepacz.population.domain;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.Objects;
 
-public class Population {
+public class PopulationDifference {
 
     private final Integer year;
-    private final Integer number;
+    private final Integer value;
 
-    public Population(Integer year, Integer number) {
+    public PopulationDifference(Integer year, Integer value) {
         Objects.requireNonNull(year);
-        Objects.requireNonNull(number);
+        Objects.requireNonNull(value);
         this.year = year;
-        this.number = number;
-    }
-
-    public Integer getYear() {
-        return year;
-    }
-
-    public Integer getNumber() {
-        return number;
+        this.value = value;
     }
 
     @Override
@@ -39,6 +30,22 @@ public class Population {
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        return ToStringBuilder.reflectionToString(this);
+    }
+
+    public Integer getValue() {
+        return value;
+    }
+
+    public boolean isPopulationGrowth() {
+        return value >= 0;
+    }
+
+    public boolean isPopulationDecline() {
+        return value < 0;
+    }
+
+    public Integer getYear() {
+        return year;
     }
 }

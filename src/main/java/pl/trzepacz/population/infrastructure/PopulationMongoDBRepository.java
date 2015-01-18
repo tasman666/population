@@ -1,7 +1,7 @@
-package com.adthena.population.infrastructure;
+package pl.trzepacz.population.infrastructure;
 
-import com.adthena.population.domain.Population;
-import com.adthena.population.domain.PopulationRepository;
+import pl.trzepacz.population.domain.Population;
+import pl.trzepacz.population.domain.PopulationRepository;
 import com.mongodb.AggregationOutput;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
