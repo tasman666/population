@@ -32,10 +32,8 @@ public class PopulationApplication {
     }
 
     private static DB recreatePopulationDatabase() throws UnknownHostException {
-        System.out.print("Connecting Mongo DB...");
+        System.out.print("MongoDB - connecting nad recreating " + MONGO_DB_NAME + " database...");
         final MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost"));
-        System.out.println("Ok");
-        System.out.print("Recreating database " + MONGO_DB_NAME + "...");
         mongoClient.dropDatabase(MONGO_DB_NAME);
         DB db = mongoClient.getDB(MONGO_DB_NAME);
         System.out.println("Ok");
